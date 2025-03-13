@@ -10,6 +10,7 @@
 # - Using `dplyr::mutate()`: This method allows chaining operations and is consistent with the `dplyr` workflow you've used in previous steps. 
 #     For example, `dataframe <- dataframe %>% mutate(new_column = value)`.
 
+
 # In this section, you will calculate several important indices used in forest inventory analysis:
 # - Expansion Factor (EF): A factor used to scale up measurements from sample plots to per-acre values.
 # - Trees Per Acre (TPA): The total number of trees in a sample plot, multiplied by the Expansion Factor (EF) to obtain the per-acre tree count.
@@ -26,9 +27,10 @@
 # Calculate the expansion factor (EF) and add it as a new column to the trees dataframe.
 
 #----------------
-#plot_radius <-    # in feet
-#plot_area_acres <-  
-#EF <-  
+plot_radius <-  58.5  # in feet
+plot_area_acres <-  (pi*(plot_radius)^2)/43560
+EF <-  1/(plot_area_acres)
+trees$EF <- round(EF)
 #----------------     
 
 # Add EF as a new column
@@ -39,7 +41,7 @@
 #----------------
 
 # Question: What is the value of EF? Round your answer to the nearest whole number.
-
+4
 
 ### Step 2.2: Calculate Basal Area (BA) and Trees Per Acre (TPA)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,32 +52,32 @@
 #   - Add the result as a new column named `dia_ft` to the trees dataframe.
 
 #----------------
-# trees
+trees <- mutate(trees,Dia_ft = DBH/12)
 #----------------
 
 # Calculate BA per tree:  BA = π × (diameter in feet / 2)^2.
 #   - Add the result as a new column named `BA` to the trees dataframe.
 #----------------
-# trees
+trees <- mutate(trees,BA=pi*(Dia_ft/2)^2)
 #----------------
 
 # Calculate BA per acre: BA_pa = BA × EF.
 #   - Add the result as a new column named `BA_pa` to the trees dataframe.
 #----------------
-# trees
+trees <-mutate(trees,BA_pa= BA*EF)
 #----------------
 
 # Calculate TPA: TPA = 1 × EF.
 #   - Add the result as a new column named `TPA` to the trees dataframe.
 #----------------
-# trees
+trees <-mutate(trees,TPA= 1*EF)
 #----------------
 
 
 # Checkpoint: Review the Largest DBH Values
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Use the following code to verify your results:
-#head(trees %>% arrange(desc(BA_pa)))
+head(trees %>% arrange(desc(BA_pa)))
 
 # Your results should look similar to this:
 

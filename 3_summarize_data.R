@@ -19,7 +19,7 @@
 #   - Add the result as a new column named `BA` to `sum_u2_BA`.
 
 #----------------
-#sum_u2_BA <-  trees %>%
+sum_u2_BA <-  trees %>% group_by(Plot) %>% summarise(BA = BA_pa+TPA)
 #----------------
 
 
